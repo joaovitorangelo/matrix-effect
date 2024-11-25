@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matrix Effect</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: black;
+            color: lime;
+            font-family: monospace;
+        }
+        canvas {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="matrixCanvas"></canvas>
+
+    <script>
+        const canvas = document.getElementById('matrixCanvas');
+        const ctx = canvas.getContext('2d');
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const fontSize = 16;
+        const columns = Math.floor(canvas.width / fontSize); // Número de colunas
+        const drops = Array(columns).fill(1); // Inicializa cada coluna na linha 1
+
+        function draw() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)'; // Efeito de desvanecimento
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.fillStyle = 'lime'; // Cor dos números
+            ctx.font = `${fontSize}px monospace`;
+
+            // Desenha os números
+            drops.forEach((y, x) => {
+                const text = Math.random() > 0.5 ? '0' : '1'; // Saídas
+                ctx.fillText(text, x * fontSize, y * fontSize);
+
+                // Reinicia a gota no topo ou move-a para baixo
+                if (y * fontSize > canvas.height && Math.random() > 0.95) {
+                    drops[x] = 0;
+                }
+                drops[x]++;
+            });
+        }
+
+        setInterval(draw, 50);
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+    </script>
+</body>
+</html>
